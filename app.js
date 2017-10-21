@@ -43,4 +43,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+require("./setup.js")(app);
+require("./server.js")(app);
+
 module.exports = app;
