@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "express": "^4.16.2",
+    "mongoose": "^4.12.3",
+    "q": "^1.5.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-scripts": "1.0.14"
