@@ -28,11 +28,15 @@ class EventPlanner extends Component {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.state = {data: '', option: 'Convene'};
+    this.apiUrl = 'http://localhost:3000/'
   }
 
   handleClick(value) {
-    this.setState({data: value});
-    console.log(value);
+    // this.setState({data: value});
+    axios.get(this.apiUrl)
+    .then((res) => {
+      this.setState({data: res.data})
+    });
   }
 
   render() {
