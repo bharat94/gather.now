@@ -1,0 +1,16 @@
+{
+  "name": "gatherserv",
+  "version": "1.0.0",
+  "description": "gather now serv",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongoose": "^4.12.4",
+    "q": "^1.5.1"
+  }
+}
