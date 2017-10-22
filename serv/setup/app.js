@@ -11,12 +11,16 @@ module.exports = function(app)
     }
 
     var mongoose = require("mongoose");
-    // var bcrypt = require("bcrypt");
-    // var SALT_WORK_FACTOR = 10;
     mongoose.connect(connectionString);
 
-    // console.log("initialized firebase");
-    // console.log(firebase);
-
-
+    var Uber = require('node-uber');
+    var uber = new Uber({
+        client_id: process.env.CLIENT_ID,
+        client_secret: process.env.CLIENT_SECRET,
+        server_token: process.env.SERVER_TOKEN,
+        redirect_uri: process.env.REDIRECT_URL,
+        name: 'Gather.Now',
+        language: 'en_US',
+        sandbox: true
+    })
 };
