@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import FacebookProvider, { Login } from 'react-facebook';
 import logo from './logo.svg';
 import './App.css';
+import graph from 'fb-react-sdk';
 
 class ConvenePlan extends Component {
   constructor(props) {
@@ -78,7 +79,24 @@ class App extends Component {
 
 class Facebook extends Component {
   handleResponse = (data) => {
-    console.log(data.profile);
+    var profile = data.profile;
+    graph.setAccessToken(data.tokenDetail.accessToken);
+    graph.get("https://graph.facebook.com/v2.10/me/taggable_friends", function(err, res) {
+                                                          console.log(res); 
+                                                        });
+
+    
+    fetch("http://localhost:3000/api/user", {
+      method: "POST",
+      headers:{
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  name: profile.name,
+                  email: profile.email,
+                })
+              })
   }
  
   handleError = (error) => {
