@@ -91,14 +91,13 @@ function updateUser(userId, user) {
 }
 
 function deleteUser(userId) {
+    console.log('attemptimg delete for userid : '+userId);
     var d = q.defer();
-    userModel.findByIdAndRemove(userId, function (err, user) {
-        if(err)
+    userModel.remove({'userid': userId}, function (err, user) {
+        if(err){
             d.reject(err);
-        else {
-            user.remove();
-            d.resolve(user);
         }
+        d.resolve(user);
     });
     return d.promise;
 }

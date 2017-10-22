@@ -5,6 +5,7 @@ module.exports = function (app, model) {
 
     app.post("/api/user", createUser);
     app.get("/api/user", findUserByUsername);
+    app.delete("/api/user/:userId", deleteUser);
     /*app.get("/api/user/:userId", findUserById);
     app.put("/api/user/:userId", updateUser);
     app.delete("/api/user/:userId", deleteUser);
@@ -92,7 +93,9 @@ module.exports = function (app, model) {
     }
 
     function deleteUser(req, res) {
+        console.log('delete called');
         var userId = req.params.userId;
+        console.log('userid : '+userId);
         model.user
             .deleteUser(userId)
             .then(function (user) {
