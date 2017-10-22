@@ -4,7 +4,7 @@
 module.exports = function (app, model) {
 
     app.post("/api/user", createUser);
-    app.get("/api/user", findUserByUsername);
+    app.get("/api/user/:username", findUserByUsername);
     app.delete("/api/user/:userId", deleteUser);
     /*app.get("/api/user/:userId", findUserById);
     app.put("/api/user/:userId", updateUser);
@@ -70,7 +70,7 @@ module.exports = function (app, model) {
 
     function findUserByUsername(req, res) {
         console.log('findUserByUsername called');
-        var username = req.query.username;
+        var username = req.params.username;
         model.user
             .findUserByUsername(username)
             .then(function (user) {

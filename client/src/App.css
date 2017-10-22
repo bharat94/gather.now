@@ -16,6 +16,7 @@
 
 .App-title {
   font-size: 2em;
+  color: white;
 }
 
 .App-intro {
@@ -87,7 +88,6 @@
 
 .container-fluid {
   margin-top: 50px;
-  border: 1px solid black;
   max-width: 40%;
 }
 
@@ -104,12 +104,30 @@
 .Friend-List {
   padding: 20px;
   color: white;
+  list-style-type: none;
+  margin-top: 6%;
 }
 
-h3 {
+h3, h4 {
   color: white;
 }
 
 .welcome-user {
   margin-top: 50px;
+}
+
+.friend-item {
+  padding: 5px;
+}
+
+.friend-item img {
+  margin-right: 2%;
+}
+
+.friend-name {
+  color: white;
+}
+
+.invite-title {
+  margin-top: 10%;
 }
