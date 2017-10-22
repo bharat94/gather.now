@@ -146,10 +146,6 @@ class Facebook extends Component {
   handleResponse = (data) => {
     this.props.updateProfile(data.profile);
   }
-
-  handleResponse(data) {
-    this.props.updateProfile(data.profile);
-  }
  
   handleError = (error) => {
     this.setState({ error });
