@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import FacebookProvider, { Login } from 'react-facebook';
 import logo from './logo.svg';
 import './App.css';
+import graph from 'fb-react-sdk';
 
 class ConvenePlan extends Component {
   constructor(props) {
@@ -96,7 +97,8 @@ class FacebookContent extends Component {
     super(props);
     this.updateProfile = this.updateProfile.bind(this);
     this.state = {
-      profile: ''
+      profile: '',
+      friends: []
     };
     this.data = '';
   }
@@ -108,17 +110,18 @@ class FacebookContent extends Component {
 
   update() {
     this.setState({
-      profile: this.data
+      profile: this.data.profile,
+      friends: this.data.friends
     });
   }
 
-  updateProfile(profile) {
-    this.data = profile;
+  updateProfile(data) {
+    this.data = data;
   }
 
   render() {
     let display = null;
-    if (this.state.profile === '') {
+    if (typeof this.state.profile == "undefined") {
       display = (
         <Facebook className="loginBtn loginBtn--facebook" updateProfile={this.updateProfile} />
       );
@@ -144,9 +147,26 @@ class FacebookContent extends Component {
 class Facebook extends Component {
 
   handleResponse = (data) => {
-    this.props.updateProfile(data.profile);
+    var profile = data.profile;
+    graph.setAccessToken(data.tokenDetail.accessToken);
+    graph.get("https://graph.facebook.com/v2.10/me/taggable_friends", function(err, res) {
+                                                          data.friends = res.data;      
+                                                        });
+    // fetch("http://localhost:3000/api/user", {
+    //   method: "POST",
+    //   headers:{
+    //               'Accept': 'application/json',
+    //               'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({
+    //               name: profile.name,
+    //               email: profile.email,
+    //             })
+    //           })
+    console.log(data)
+    this.props.updateProfile(data);
   }
- 
+  
   handleError = (error) => {
     this.setState({ error });
   }
