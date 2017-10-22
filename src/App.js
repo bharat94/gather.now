@@ -1,21 +1,47 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom'
 import logo from './logo.svg';
 import './App.css';
+import FacebookProvider, { Login } from 'react-facebook';
+import Map from './Map.js'
+
 
 class App extends Component {
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
       </div>
     );
   }
 }
+
+
+class FacebookLogin extends Component {
+  handleResponse = (data) => {
+    console.log(data);
+  }
+ 
+  handleError = (error) => {
+    this.setState({ error });
+  }
+ 
+  render() {
+    return (
+      <FacebookProvider appId="180236225860850">
+        <Login
+          scope="email"
+          onResponse={this.handleResponse}
+          onError={this.handleError}
+        >
+          <button className="loginBtn loginBtn--facebook">Login via Facebook</button>
+        </Login>
+      </FacebookProvider>
+    );
+  }
+}
+
+
+
 
 export default App;
