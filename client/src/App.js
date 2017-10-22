@@ -11,14 +11,35 @@ class ConvenePlan extends Component {
   }
 
   handleClick() {
-    this.props.onButtonClick('Hello World');
+    this.props.onButtonClick();
   }
 
   render() {
     return (
       <div className="row">
         <button type="button" className="btn btn-info btn-lg" onClick={this.handleClick}>
-          {this.props.data}
+          Convene
+        </button>
+      </div>
+    );
+  }
+}
+
+class PartyPlan extends Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.props.onButtonClick();
+  }
+
+  render() {
+    return (
+      <div className="row">
+        <button type="button" className="btn btn-primary btn-lg" onClick={this.handleClick} >
+          Party
         </button>
       </div>
     );
@@ -29,28 +50,19 @@ class EventPlanner extends Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
-    this.state = {data: '', option: 'Convene'};
   }
 
-  handleClick(value) {
-    this.setState({data: value});
-    console.log(value);
+  handleClick() {
+    this.props.onButtonClick();
   }
 
   render() {
-    let answer = null;
-    if (this.state.data === '') {
-      answer = (
-        <div className="container-fluid">
-          <ConvenePlan data={this.state.option} onButtonClick={this.handleClick} />
-          <div className="row">
-            <button type="button" className="btn btn-primary btn-lg">Party</button>
-          </div>
-        </div>
-      );
-    } else {
-      answer = <h3>Hello World</h3>;
-    }
+    let answer = (
+      <div className="container-fluid">
+        <ConvenePlan onButtonClick={this.handleClick} />
+        <PartyPlan onButtonClick={this.handleClick} />
+      </div>
+    );
     return (
       <div className="container">
         <div className="row">
@@ -64,26 +76,66 @@ class EventPlanner extends Component {
 
 class FriendListItem extends Component {
   render() {
-    return <li>{this.props.value}</li>;
+    return (
+      <li>
+        <div className="row friend-item">
+          <img src={this.props.value.picture.data.url} height="90px" width="90px" />
+          <h4 className="friend-name">{this.props.value.name}</h4>
+        </div>
+      </li>
+    );
+  }
+}
+
+class Invitation extends Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.props.sendInvitations();
+  }
+
+  render() {
+    return (
+      <div className="row">
+        <button type="button" className="btn btn-success btn-lg" onClick={this.handleClick} >
+          Send Invitations
+        </button>
+      </div>
+    );
   }
 }
 
 class FriendList extends Component {
+  constructor(props) {
+    super(props);
+    this.sendInvitations = this.sendInvitations.bind(this);
+  }
+
+  sendInvitations() {
+    this.props.sendInvitations();
+  }
+
   render() {
-    const numbers = this.props.numbers;
-    const friends = numbers.map((friend) =>
-      <FriendListItem key={friend.toString()}
+    const friends = this.props.friends;
+    let filtered = friends.slice(0, 4);
+    const friendList = filtered.map((friend) =>
+      <FriendListItem key={friend.id.toString()}
                       value={friend} />
     );
     return (
-    <ul className="Friend-List">
-      {friends}
-    </ul>
+    <div className="container-fluid">
+      <ul className="Friend-List">
+        {friendList}
+      </ul>
+      <Invitation sendInvitations={this.sendInvitations} />
+    </div>
     );
   }
 }
 
-const friends = [1,2,3,4,5]
 class App extends Component {
   render() {
     return (
@@ -96,9 +148,13 @@ class FacebookContent extends Component {
   constructor(props) {
     super(props);
     this.updateProfile = this.updateProfile.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.sendInvitations = this.sendInvitations.bind(this);
     this.state = {
       profile: '',
-      friends: []
+      friends: [],
+      isOptionSelected: false,
+      invited: false
     };
     this.data = '';
   }
@@ -119,9 +175,32 @@ class FacebookContent extends Component {
     this.data = data;
   }
 
+  handleClick() {
+    this.setState({
+      isOptionSelected: true
+    });
+  }
+
+  sendInvitations() {
+    this.setState({
+      invited: true
+    });
+  }
+
   render() {
     let display = null;
-    if (typeof this.state.profile == "undefined") {
+    if (this.state.invited) {
+      display = (
+        <div className="container-fluid">
+          <h4 className="invite-title">All your friends are on the way! ETAs will be updated soon.</h4>
+          <FriendList friends={this.state.friends} />
+        </div>
+      );
+    } else if (this.state.isOptionSelected) {
+      display = (
+        <FriendList friends={this.state.friends} sendInvitations={this.sendInvitations} />
+      );
+    } else if (typeof this.state.profile == "undefined") {
       display = (
         <Facebook className="loginBtn loginBtn--facebook" updateProfile={this.updateProfile} />
       );
@@ -129,6 +208,7 @@ class FacebookContent extends Component {
       display = (
         <div className="row welcome-user">
           <h3>Welcome {this.state.profile.name}!</h3>
+          <EventPlanner onButtonClick={this.handleClick} />
         </div>
       );
     }
