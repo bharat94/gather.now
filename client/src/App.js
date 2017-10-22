@@ -62,43 +62,112 @@ class EventPlanner extends Component {
   }
 }
 
+class FriendListItem extends Component {
+  render() {
+    return <li>{this.props.value}</li>;
+  }
+}
+
+class FriendList extends Component {
+  render() {
+    const numbers = this.props.numbers;
+    const friends = numbers.map((friend) =>
+      <FriendListItem key={friend.toString()}
+                      value={friend} />
+    );
+    return (
+    <ul className="Friend-List">
+      {friends}
+    </ul>
+    );
+  }
+}
+
+const friends = [1,2,3,4,5]
 class App extends Component {
   render() {
+    return (
+      <FacebookContent />
+    );
+  }
+}
+
+class FacebookContent extends Component {
+  constructor(props) {
+    super(props);
+    this.updateProfile = this.updateProfile.bind(this);
+    this.state = {
+      profile: '',
+      friends: []
+    };
+    this.data = '';
+  }
+
+  componentDidMount() {
+    this.timerID = setInterval(
+    () => this.update(), 2000);
+  }
+
+  update() {
+    this.setState({
+      profile: this.data.profile,
+      friends: this.data.friends
+    });
+  }
+
+  updateProfile(data) {
+    this.data = data;
+  }
+
+  render() {
+    let display = null;
+    if (typeof this.state.profile == "undefined") {
+      display = (
+        <Facebook className="loginBtn loginBtn--facebook" updateProfile={this.updateProfile} />
+      );
+    } else {
+      display = (
+        <div className="row welcome-user">
+          <h3>Welcome {this.state.profile.name}!</h3>
+        </div>
+      );
+    }
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to gather.now</h1>
+          <h1 className="App-title">gather.now</h1>
         </header>
-        <EventPlanner />
-        <Facebook className="loginBtn loginBtn--facebook"> </Facebook>
+        {display}
       </div>
     );
   }
 }
 
 class Facebook extends Component {
+
   handleResponse = (data) => {
     var profile = data.profile;
     graph.setAccessToken(data.tokenDetail.accessToken);
     graph.get("https://graph.facebook.com/v2.10/me/taggable_friends", function(err, res) {
-                                                          console.log(res); 
+                                                          data.friends = res.data;      
                                                         });
-
-    
-    fetch("http://localhost:3000/api/user", {
-      method: "POST",
-      headers:{
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  name: profile.name,
-                  email: profile.email,
-                })
-              })
+    // fetch("http://localhost:3000/api/user", {
+    //   method: "POST",
+    //   headers:{
+    //               'Accept': 'application/json',
+    //               'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({
+    //               name: profile.name,
+    //               email: profile.email,
+    //             })
+    //           })
+    console.log(data)
+    this.props.updateProfile(data);
   }
- 
+
+
   handleError = (error) => {
     this.setState({ error });
   }
