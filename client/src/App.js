@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import FacebookProvider from 'react-facebook'
+import FacebookProvider, { Login } from 'react-facebook';
 import logo from './logo.svg';
 import './App.css';
 
@@ -70,14 +70,15 @@ class App extends Component {
           <h1 className="App-title">Welcome to gather.now</h1>
         </header>
         <EventPlanner />
+        <Facebook className="loginBtn loginBtn--facebook"> </Facebook>
       </div>
     );
   }
 }
 
-class FacebookLogin extends Component {
+class Facebook extends Component {
   handleResponse = (data) => {
-    console.log(data);
+    console.log(data.profile);
   }
  
   handleError = (error) => {
@@ -86,14 +87,15 @@ class FacebookLogin extends Component {
  
   render() {
     return (
+
       <FacebookProvider appId="180236225860850">
-        <FacebookLogin
-          scope="email"
-          onResponse={this.handleResponse}
-          onError={this.handleError}
-        >
-          <button className="loginBtn loginBtn--facebook">Login via Facebook</button>
-        </FacebookLogin>
+        <Login
+            scope="email, public_profile"
+            onResponse={this.handleResponse}
+            onError={this.handleError}
+          >
+            <button className="loginBtn loginBtn--facebook">Login via Facebook</button>
+        </Login>
       </FacebookProvider>
     );
   }
