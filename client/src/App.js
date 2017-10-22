@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import FacebookProvider from 'react-facebook'
 import logo from './logo.svg';
 import './App.css';
 
@@ -86,13 +87,13 @@ class FacebookLogin extends Component {
   render() {
     return (
       <FacebookProvider appId="180236225860850">
-        <Login
+        <FacebookLogin
           scope="email"
           onResponse={this.handleResponse}
           onError={this.handleError}
         >
           <button className="loginBtn loginBtn--facebook">Login via Facebook</button>
-        </Login>
+        </FacebookLogin>
       </FacebookProvider>
     );
   }
