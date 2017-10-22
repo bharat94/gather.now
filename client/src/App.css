@@ -4,18 +4,18 @@
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  height: 100px;
+  margin-top: 3%;
 }
 
 .App-header {
-  background-color: #222;
   height: 150px;
   padding: 20px;
   color: white;
 }
 
 .App-title {
-  font-size: 1.5em;
+  font-size: 2em;
 }
 
 .App-intro {
@@ -33,7 +33,7 @@
   box-sizing: border-box;
   position: relative;
   /* width: 13em;  - apply for fixed size */
-  margin: 0.2em;
+  margin: 10%;
   padding: 0 15px 0 46px;
   border: none;
   text-align: left;
@@ -99,4 +99,17 @@
   padding: 20px;
   font-size: 20px;
   margin: 30px;
+}
+
+.Friend-List {
+  padding: 20px;
+  color: white;
+}
+
+h3 {
+  color: white;
+}
+
+.welcome-user {
+  margin-top: 50px;
 }

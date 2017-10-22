@@ -61,24 +61,94 @@ class EventPlanner extends Component {
   }
 }
 
+class FriendListItem extends Component {
+  render() {
+    return <li>{this.props.value}</li>;
+  }
+}
+
+class FriendList extends Component {
+  render() {
+    const numbers = this.props.numbers;
+    const friends = numbers.map((friend) =>
+      <FriendListItem key={friend.toString()}
+                      value={friend} />
+    );
+    return (
+    <ul className="Friend-List">
+      {friends}
+    </ul>
+    );
+  }
+}
+
+const friends = [1,2,3,4,5]
 class App extends Component {
   render() {
+    return (
+      <FacebookContent />
+    );
+  }
+}
+
+class FacebookContent extends Component {
+  constructor(props) {
+    super(props);
+    this.updateProfile = this.updateProfile.bind(this);
+    this.state = {
+      profile: ''
+    };
+    this.data = '';
+  }
+
+  componentDidMount() {
+    this.timerID = setInterval(
+    () => this.update(), 2000);
+  }
+
+  update() {
+    this.setState({
+      profile: this.data
+    });
+  }
+
+  updateProfile(profile) {
+    this.data = profile;
+  }
+
+  render() {
+    let display = null;
+    if (this.state.profile === '') {
+      display = (
+        <Facebook className="loginBtn loginBtn--facebook" updateProfile={this.updateProfile} />
+      );
+    } else {
+      display = (
+        <div className="row welcome-user">
+          <h3>Welcome {this.state.profile.name}!</h3>
+        </div>
+      );
+    }
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to gather.now</h1>
+          <h1 className="App-title">gather.now</h1>
         </header>
-        <EventPlanner />
-        <Facebook className="loginBtn loginBtn--facebook"> </Facebook>
+        {display}
       </div>
     );
   }
 }
 
 class Facebook extends Component {
+
   handleResponse = (data) => {
-    console.log(data.profile);
+    this.props.updateProfile(data.profile);
+  }
+
+  handleResponse(data) {
+    this.props.updateProfile(data.profile);
   }
  
   handleError = (error) => {
