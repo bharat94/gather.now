@@ -1,6 +1,3 @@
-/**
- * Created by rohansapre on 3/22/17.
- */
 module.exports = function (app, model) {
 
     app.post("/api/user", createUser);

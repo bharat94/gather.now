@@ -12,6 +12,9 @@ module.exports = function(app)
         user: userModel
     };
 
+    console.log('before api service');
+    require('./services/api.service.js')(app);
+
     require('./services/user.service.server.js')(app, model);
 
 };
